@@ -5,8 +5,8 @@ import requests
 import time
 
 # --- CONFIGURATION ---
-BOT_TOKEN = 'PASTE_YOUR_BOTFATHER_TOKEN_HERE'
-ADMIN_ID = YOUR_TELEGRAM_USER_ID # You can find yours by messaging @userinfobot
+BOT_TOKEN = '8832799879:AAE2FFflrwvjotqVeWgsTdyydFnOpc5N65I'
+ADMIN_ID = 5412765481 # You can find yours by messaging @userinfobot
 
 logging.basicConfig(level=logging.INFO)
 
