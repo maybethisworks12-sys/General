@@ -1,6 +1,6 @@
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 import requests
 import time
 
@@ -44,12 +44,17 @@ async def handle_service_selection(update: Update, context: ContextTypes.DEFAULT
         
     elif service == 'crunchy':
         await query.edit_message_text("Send me the Combo:\nFormat: email:pass")
-        context.user_data['waiting_for'] = 'crunchy')
+        context.user_data['waiting_for'] = 'crunchy'
         
+    elif service == 'steam':
+        await query.edit_message_text("Send me the Combo:\nFormat: email:pass")
+        context.user_data['waiting_for'] = 'steam'
+        
+    elif service == 'stripe':
+        await query.edit_message_text("Send me the Combo:\nFormat: email:pass")
+        context.user_data['waiting_for'] = 'stripe'
     else:
-        await query.edit_message_text(f"Checking {service}... (Logic goes here)")
-        # For now, just return a fake result
-        await query.edit_message_text(f"✅ **Result:** Valid Account")
+        await query.edit_message_text("Invalid service selection.")
 
 async def handle_combos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Process the combo sent by user"""
@@ -83,10 +88,8 @@ def main():
     
     application.add_handler(CommandHandler('start', start))
     application.add_handler(CallbackQueryHandler(handle_service_selection))
-    application.add_handler(CommandHandler('check', lambda u, c: u.message.reply_text("Use buttons below"))) # Fallback
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_combos))
     
-    # We need a generic handler for text when waiting for input
-    # Note: In a real app, you'd use ConversationHandlers, but this is simplest for mobile editing
     application.run_polling()
 
 if __name__ == '__main__':
